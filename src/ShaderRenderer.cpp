@@ -1,0 +1,62 @@
+//
+//  ShaderRenderer.cpp
+//  oFShaders
+//
+//  Created by Iain Moncrief on 12/9/19.
+//
+
+#include "ShaderRenderer.hpp"
+
+ShaderRenderer::ShaderRenderer() {
+    drawFunction = nullptr;
+    target = nullptr;
+}
+ShaderRenderer::~ShaderRenderer() {
+    
+}
+
+void ShaderRenderer::setDrawTarget(ofBaseDraws *_target) {
+    target = _target;
+}
+
+void ShaderRenderer::initialize(int width, int height) {
+    for (int i = 0; i < shaders.size(); i++) {
+        ofFbo* layer = new ofFbo();
+        layer->allocate(width, height);
+        shaderLayers.push_back(layer);
+    }
+}
+
+void ShaderRenderer::draw(float x, float y) {
+    renderShaders(x, y);
+}
+
+void ShaderRenderer::renderShaders(float x, float y) {
+    
+    
+    const int layersToRender = shaderLayers.size();
+    for (int i = 0; i < layersToRender; i++) {
+        
+        ofFbo* layer = shaderLayers[i];
+        ofShader* shader = shaders[i];
+        
+        layer->begin();
+        shader->begin();
+        
+        
+        if (i == 0) {
+            target->draw(x, y);
+        } else {
+            shaderLayers[i - 1]->draw(x, y);
+        }
+        
+        shader->end();
+        layer->end();
+
+        
+        lastLayer = layer;
+
+    }
+    
+}
+
