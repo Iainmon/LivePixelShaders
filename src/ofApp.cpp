@@ -40,12 +40,20 @@ void ofApp::setup() {
         "shadersGL3/filterArtsy2.frag"
     };
     
+    ofShader* blurShader = new ofShader();
+    blurShader->load("shadersGL3/passthrough.vert", "shadersGL3/shaderBlur.frag");
+    
     for (int i = 0; i < fragmentShaders.size(); i++) {
         
         ofShader* shader = new ofShader();
         shader->load("shadersGL3/passthrough.vert", fragmentShaders[i]);
         
         ShaderRenderer* renderer = new ShaderRenderer();
+        
+        if (i < 1) {
+            renderer->shaders.push_back(blurShader);
+        }
+        
         renderer->shaders.push_back(shader);
         renderer->setDrawTarget(&vidGrabber);
         renderer->initialize(camWidth, camHeight);
@@ -69,6 +77,16 @@ void ofApp::draw() {
     
 }
 
+void ofApp::saveFramebufferToImage() {
+    ofPixels pix;
+    ofImage img;
+    
+    renderers[activeShaderIndex]->lastLayer->getTexture().readToPixels(pix);
+    
+    img.setFromPixels(pix);
+    img.save("export.png");
+}
+
 void ofApp::keyPressed(int key){
     
 }
@@ -82,6 +100,10 @@ void ofApp::keyReleased(int key) {
             
         case OF_KEY_LEFT:
             activeShaderIndex--;
+            break;
+            
+        case 's':
+            saveFramebufferToImage();
             break;
             
         default:
