@@ -21,6 +21,11 @@ class ShaderRenderer {
     
     void renderShaders(float x, float y);
     
+    uint64_t startTime;
+    
+    int widthSize;
+    int heightSize;
+    
     public:
     
     ShaderRenderer();

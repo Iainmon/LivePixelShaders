@@ -31,6 +31,8 @@ void ofApp::setup() {
     
     
     vector<string> fragmentShaders = {
+        "shadersGL3/filterRainbow.frag",
+        "shadersGL3/shaderTimeTest.frag",
         "shadersGL3/shaderSobelEdges.frag",
         "shadersGL3/shaderSobel.frag",
         "shadersGL3/filter.frag",
@@ -39,6 +41,8 @@ void ofApp::setup() {
         "shadersGL3/filterArtsy1.frag",
         "shadersGL3/filterArtsy2.frag"
     };
+    
+    // https://www.shadertoy.com/view/XlSczt
     
     ofShader* blurShader = new ofShader();
     blurShader->load("shadersGL3/passthrough.vert", "shadersGL3/shaderBlur.frag");
@@ -50,9 +54,9 @@ void ofApp::setup() {
         
         ShaderRenderer* renderer = new ShaderRenderer();
         
-        if (i < 1) {
-            renderer->shaders.push_back(blurShader);
-        }
+//        if (i < 1) {
+//            renderer->shaders.push_back(blurShader);
+//        }
         
         renderer->shaders.push_back(shader);
         renderer->setDrawTarget(&vidGrabber);
