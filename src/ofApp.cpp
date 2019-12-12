@@ -3,6 +3,8 @@
 
 void ofApp::setup() {
     
+    ofSetDataPathRoot("../Resources/data/");
+    
     image.load("img.jpg");
     
     camWidth = 1280;
